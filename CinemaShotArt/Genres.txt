@@ -3,5 +3,5 @@ Animation
 Adventure
 Sci-Fi
 Comedy
-Thirller
+Thriller
 Horror
