@@ -7,20 +7,30 @@ public class Main {
     private static boolean keep = false;
     JFrame frame;
     JButton MoodDropDown;
+    JButton generate;
     private final String title = "AI-Powered Scene Shot Generator";
     JButton GenreDropDown;
     ArrayList<String> genres = new ArrayList<>();
     ArrayList<String> moods = new  ArrayList<>();
+    String[] thisArray = new String[2];
     ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == MoodDropDown) {
-                JOptionPane.showOptionDialog(frame, "Mood Drop Down", title,
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, moods.toArray(), moods.toArray()[0]);
+                String modd = (String)JOptionPane.showInputDialog(frame, "Mood Drop Down", title
+                        , JOptionPane.QUESTION_MESSAGE, null, moods.toArray(), moods.toArray()[0]);
             }
             if (e.getSource() == GenreDropDown) {
-                JOptionPane.showInternalOptionDialog(frame, "Genre Drop Down", title,
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, genres.toArray(), genres.get(0));
+                String gen = (String)JOptionPane.showInputDialog(frame, "Genre Drop Down", title
+                        , JOptionPane.QUESTION_MESSAGE, null, genres.toArray(), genres.toArray()[0]);
+            }
+            if (e.getSource() == generate) {
+                if (thisArray[0] != null && thisArray[1] != null) {
+                    System.out.println(thisArray[0] + " " + thisArray[1]);
+                }
+                else {
+                    JOptionPane.showMessageDialog(frame, "Please enter the data before generating the scenario!", "y", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     };
@@ -72,10 +82,17 @@ public class Main {
         GenreDropDown.addActionListener(actionListener);
         panel.add(MoodDropDown);
         panel.add(GenreDropDown);
+        frame.add(panel);
+        frame.setVisible(true);
+        generate = new JButton("Generate");
+        generate.addActionListener(actionListener);
+        panel.add(generate);
         JTextField textField = new JTextField();
         textField.setColumns(10);
         textField.setHorizontalAlignment(JTextField.CENTER);
-        textField.setFont(new Font("Arial", Font.PLAIN, 20));
+        textField.setFont(new Font("Arial", Font.PLAIN, 14));
+        panel.add(textField);
+
 
         panel.add(textField);
         frame.add(panel);
