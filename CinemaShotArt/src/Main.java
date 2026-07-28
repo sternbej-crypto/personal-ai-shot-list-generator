@@ -18,7 +18,7 @@ public class Main implements Director {
     Path path;
     JTextField textField;
     JTextArea outputArea;
-    JButton del;
+
     private final String title = "AI-Powered Scene Shot Generator";
     JButton GenreDropDown;
     ArrayList<String> genres = new ArrayList<>();
@@ -36,7 +36,6 @@ public class Main implements Director {
                 String gen = (String)JOptionPane.showInputDialog(frame, "Genre Drop Down", title
                         , JOptionPane.QUESTION_MESSAGE, null, genres.toArray(), genres.toArray()[0]);
                 thisArray[1] = gen;
-                System.out.println(thisArray[1]);
             }
             if (e.getSource() == generate) {
                 if (thisArray[0] != null && thisArray[1] != null) {
@@ -52,7 +51,16 @@ public class Main implements Director {
                     if (choice == JOptionPane.YES_OPTION) {
                         if (fileCounter >= FILE_MAX) {
                             JOptionPane.showMessageDialog(frame, "Maximum number of files exceeded.", "Save Error", JOptionPane.ERROR_MESSAGE);
-
+                            int op = JOptionPane.showConfirmDialog(frame, "Overwrite oldest file?", "Override File", JOptionPane.YES_NO_OPTION);
+                            if (op == JOptionPane.YES_OPTION) {
+                                int tempCount = fileCounter;
+                                fileCounter = 0;
+                                writeToFile(outputArea.getText());
+                                fileCounter = tempCount;
+                            }
+                            else if (op == JOptionPane.NO_OPTION) {
+                                int q = 0;
+                            }
                         }
                         else {
                           writeToFile(outputArea.getText());
@@ -63,14 +71,7 @@ public class Main implements Director {
                     JOptionPane.showMessageDialog(frame, "Need to have something to save", "Save Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            if (e.getSource() == del) {
-                if (path == null) {
-                    JOptionPane.showMessageDialog(frame, "No files to delete", "Delete Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else {
-                    System.out.println(path);
-                }
-            }
+
         }
     };
     public Main() {
@@ -80,7 +81,6 @@ public class Main implements Director {
             BufferedReader bw = new BufferedReader(new FileReader(fi));
             String numOfFiles = bw.readLine();
             fileCounter = Integer.parseInt(numOfFiles);
-            System.out.println(fileCounter);
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -163,14 +163,11 @@ public class Main implements Director {
         textField.setHorizontalAlignment(JTextField.CENTER);
         textField.setFont(new Font("Arial", Font.PLAIN, 14));
         panel1.add(textField);
-        del = new JButton("Full Delete");
-        del.addActionListener(actionListener);
-        panel1.add(del);
         panel.add(panel1);
         outputArea = new JTextArea();
         outputArea.setEditable(false);
         outputArea.setBackground(Color.white);
-        outputArea.setFont(new Font("Arial", Font.ITALIC, 20));
+        outputArea.setFont(new Font("Arial", Font.ITALIC, 13));
         outputArea.setText("Shot Description Here");
         outputArea.setSize(800, 10);
         panel.add(outputArea);
